@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdf
+  labels:
+    app: pdf
+spec:
+  selector:
+    matchLabels:
+      app: pdf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pdf
+    spec:
+      containers:
+      - name: pdf-container
+        image: 182642007786.dkr.ecr.ap-south-1.amazonaws.com/homelane3:pdf
+        ports:
+        - containerPort: 3333
+        resources:
+         limits:
+           memory: 500Mi
+           cpu: 500m
+         requests:
+           memory: 250Mi
+           cpu: 250m
+        env:
+        - name: PYLINT_ENABLED
+          value: "False"
+        - name: DOMAIN_BASE_URL
+          value: "https://pdf.homelane.com"
+          #        livenessProbe:
+                #          httpGet:
+                #path: /healthcheck/
+            #port: 3333
+            #scheme: HTTP
+            # exec:
+            #command:
+            # - curl
+            # - localhost:3333/healthcheck/
+            # initialDelaySeconds: 100
+            #timeoutSeconds: 20
+            #successThreshold: 1
+            #failureThreshold: 7
+            #readinessProbe:
+                #httpGet:
+                #path: /healthcheck/
+                #port: 3333
+            #scheme: HTTP
+            # exec:
+            # command:
+            #   - curl
+            #  - localhost:3333/healthcheck/
+            #initialDelaySeconds: 100
+            # timeoutSeconds: 20
+            #successThreshold: 1
+            #failureThreshold: 7
+        volumeMounts:
+          - mountPath: /opt/log
+            name: application-logs
+      volumes:
+        - name: application-logs
+          hostPath:
+            path: /opt/log
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pdf
+spec:
+  selector:
+    app: pdf
+  ports:
+    - protocol: TCP
+      port: 3333
+      targetPort: 3333
+      #  type: ClusterIP
