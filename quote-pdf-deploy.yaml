@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
       - name: pdf-container
-        image: 182642007786.dkr.ecr.ap-south-1.amazonaws.com/homelane3:pdf
+        image: grafana/grafana
+        #image: 182642007786.dkr.ecr.ap-south-1.amazonaws.com/homelane3:pdf
         ports:
-        - containerPort: 3333
+        containerPort: 3000
+        #- containerPort: 
         resources:
          limits:
            memory: 500Mi
@@ -76,5 +78,6 @@ spec:
   ports:
     - protocol: TCP
       port: 3333
-      targetPort: 3333
+      #targetPort: 3333
+      targetPort: 3000
       #  type: ClusterIP
