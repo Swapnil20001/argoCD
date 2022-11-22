@@ -13,7 +13,8 @@ spec:
     repoURL: "https://github.com/Swapnil20001/argoCD.git"
     targetRevision: HEAD
   
-  automated:
-    selfHeal: true
-    prune : true
+  syncPolicy:
+    automated:
+      selfHeal: true
+        prune : true
 
